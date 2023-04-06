@@ -1,0 +1,162 @@
+"
+import time
+from appium import webdriver
+from appium.webdriver.common.mobileby import MobileBy
+
+desired_caps = {
+    ""platformName"": ""Android"",
+    ""deviceName"": ""emulator-5554"",
+    ""appPackage"": ""com.google.android.youtube"",
+    ""appActivity"": ""com.google.android.apps.youtube.app.WatchWhileActivity"",
+    ""noReset"": True
+}
+
+driver = webdriver.Remote(""http://localhost:4723/wd/hub"", desired_caps)
+
+time.sleep(5)
+
+search_button = driver.find_element(MobileBy.ID, ""com.google.android.youtube:id/menu_search"")
+search_button.click()
+
+time.sleep(2)
+
+search_box = driver.find_element(MobileBy.ID, ""com.google.android.youtube:id/search_edit_text"")
+search_box.send_keys(""dota2"")
+
+time.sleep(2)
+
+search_box.send_keys(u'\ue007')
+
+time.sleep(5)
+
+driver.quit()
+",2
+"write a python script for me to load youtube and search dota2 on Android simulator using appuim.The platformName is Android, the deviceName is emulator-5554, use webdriver.find_element to search the button","import time
+from appium import webdriver
+from appium.webdriver.common.mobileby import MobileBy
+
+desired_caps = {
+    ""platformName"": ""Android"",
+    ""deviceName"": ""emulator-5554"",
+    ""appPackage"": ""com.google.android.youtube"",
+    ""appActivity"": ""com.google.android.apps.youtube.app.WatchWhileActivity"",
+    ""noReset"": True
+}
+
+driver = webdriver.Remote(""http://localhost:4723/wd/hub"", desired_caps)
+
+time.sleep(5)
+
+search_button = driver.find_element(MobileBy.ID, ""com.google.android.youtube:id/menu_search"")
+search_button.click()
+
+time.sleep(2)
+
+search_box = driver.find_element(MobileBy.ID, ""com.google.android.youtube:id/search_edit_text"")
+search_box.send_keys(""dota2"")
+
+time.sleep(2)
+
+search_box.submit()
+
+time.sleep(5)
+
+driver.quit()"
+"I have the following code: 
+```
+import time
+from appium import webdriver
+from appium.webdriver.common.mobileby import MobileBy
+
+desired_caps = {
+    ""platformName"": ""Android"",
+    ""deviceName"": ""emulator-5554"",
+    ""appPackage"": ""com.google.android.youtube"",
+    ""appActivity"": ""com.google.android.apps.youtube.app.WatchWhileActivity"",
+    ""noReset"": True
+}
+
+driver = webdriver.Remote(""http://localhost:4723/wd/hub"", desired_caps)
+
+time.sleep(5)
+
+search_button = driver.find_element(MobileBy.ID, ""com.google.android.youtube:id/menu_search"")
+search_button.click()
+
+time.sleep(2)
+
+search_box = driver.find_element(MobileBy.ID, ""com.google.android.youtube:id/search_edit_text"")
+search_box.send_keys(""dota2"")
+
+time.sleep(2)
+
+search_box.submit()
+
+time.sleep(5)
+
+driver.quit()
+```
+ There is an error in above code, error message is 
+ Traceback (most recent call last):
+  File ""generated_code.py"", line 27, in <module>
+    search_box.submit()
+  File ""/Users/cm/opt/anaconda3/envs/chatGPT/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py"", line 110, in submit
+    self._parent.execute_script(script, self)
+  File ""/Users/cm/opt/anaconda3/envs/chatGPT/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py"", line 506, in execute_script
+    return self.execute(command, {""script"": script, ""args"": converted_args})[""value""]
+  File ""/Users/cm/opt/anaconda3/envs/chatGPT/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py"", line 444, in execute
+    self.error_handler.check_response(response)
+  File ""/Users/cm/opt/anaconda3/envs/chatGPT/lib/python3.8/site-packages/appium/webdriver/errorhandler.py"", line 30, in check_response
+    raise wde
+  File ""/Users/cm/opt/anaconda3/envs/chatGPT/lib/python3.8/site-packages/appium/webdriver/errorhandler.py"", line 26, in check_response
+    super().check_response(response)
+  File ""/Users/cm/opt/anaconda3/envs/chatGPT/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py"", line 249, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: Method is not implemented
+Stacktrace:
+NotImplementedError: Method is not implemented
+    at AndroidUiautomator2Driver.execute (/Applications/Appium.app/Contents/Resources/app/node_modules/appium/node_modules/appium-android-driver/lib/commands/execute.js:14:11)
+    at commandExecutor (/Applications/Appium.app/Contents/Resources/app/node_modules/appium/node_modules/appium-base-driver/lib/basedriver/driver.js:330:9)
+    at /Applications/Appium.app/Contents/Resources/app/node_modules/appium/node_modules/async-lock/lib/index.js:125:12
+    at AsyncLock._promiseTry (/Applications/Appium.app/Contents/Resources/app/node_modules/appium/node_modules/async-lock/lib/index.js:249:31)
+    at exec (/Applications/Appium.app/Contents/Resources/app/node_modules/appium/node_modules/async-lock/lib/index.js:124:9)
+    at AsyncLock.acquire (/Applications/Appium.app/Contents/Resources/app/node_modules/appium/node_modules/async-lock/lib/index.js:140:3)
+    at AndroidUiautomator2Driver.executeCommand (/Applications/Appium.app/Contents/Resources/app/node_modules/appium/node_modules/appium-base-driver/lib/basedriver/driver.js:343:39)
+    at AppiumDriver.executeCommand (/Applications/Appium.app/Contents/Resources/app/node_modules/appium/lib/appium.js:534:36)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:85:5)
+    at asyncHandler (/Applications/Appium.app/Contents/Resources/app/node_modules/appium/node_modules/appium-base-driver/lib/protocol/protocol.js:309:21)
+
+. Fix the error and return the whole new code","
+import time
+from appium import webdriver
+from appium.webdriver.common.mobileby import MobileBy
+
+desired_caps = {
+    ""platformName"": ""Android"",
+    ""deviceName"": ""emulator-5554"",
+    ""appPackage"": ""com.google.android.youtube"",
+    ""appActivity"": ""com.google.android.apps.youtube.app.WatchWhileActivity"",
+    ""noReset"": True
+}
+
+driver = webdriver.Remote(""http://localhost:4723/wd/hub"", desired_caps)
+
+time.sleep(5)
+
+search_button = driver.find_element(MobileBy.ID, ""com.google.android.youtube:id/menu_search"")
+search_button.click()
+
+time.sleep(2)
+
+search_box = driver.find_element(MobileBy.ID, ""com.google.android.youtube:id/search_edit_text"")
+search_box.send_keys(""dota2"")
+
+time.sleep(2)
+
+search_box.send_keys(u'\ue007')
+
+time.sleep(5)
+
+driver.quit()
+"

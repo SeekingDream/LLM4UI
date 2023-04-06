@@ -1,0 +1,33 @@
+"def my_function():
+    print(""Hello World!"")
+
+my_function()",3
+write a python script for me to load chrome and search dota2 on Android simulator using appuim,"from appium import webdriver
+
+desired_caps = {
+    'platformName': 'Android',
+    'deviceName': 'Android Emulator',
+    'browserName': 'Chrome'
+}
+
+driver = webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
+
+driver.get('https://www.google.com')
+
+search_box = driver.find_element_by_name('q')
+search_box.send_keys('dota2')
+search_box.submit()"
+"There is an error in your code, error message is     at asyncHandler (/Applications/Appium.app/Contents/Resources/app/node_modules/appium/node_modules/appium-base-driver/lib/protocol/protocol.js:392:37). return the whole new code","asyncHandler(command, {
+    commandName: commandName,
+    args: args,
+    sessionId: this.sessionId
+  }, (err, res) => {
+    if (err) {
+      return cb(err);
+    }
+    cb(null, res);
+  });"
+"There is an error in your code, error message is SyntaxError: invalid syntax. return the whole new code","def my_function():
+    print(""Hello World!"")
+
+my_function()"
