@@ -9,7 +9,7 @@ from query import QUERY_LIST
 
 
 
-openai.api_key = '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'
+openai.api_key = KEY
 
 
 def response2code(answer):
