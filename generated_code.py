@@ -1,31 +1,21 @@
-import time
-from appium import webdriver
-from appium.webdriver.common.mobileby import MobileBy
+import uiautomator2 as u2
 
-desired_caps = {
-    "platformName": "Android",
-    "deviceName": "emulator-5554",
-    "appPackage": "com.google.android.youtube",
-    "appActivity": "com.google.android.apps.youtube.app.WatchWhileActivity",
-    "noReset": True
-}
+# Connect to device
+d = u2.connect('38534a424c453098')
 
-driver = webdriver.Remote("http://localhost:4723/wd/hub", desired_caps)
+# Open YouTube app
+d.app_start('com.google.android.youtube', 'com.google.android.youtube.HomeActivity')
 
-time.sleep(5)
+# Tap on profile picture
+d(resourceId="com.google.android.youtube:id/avatar").click()
 
-search_button = driver.find_element(MobileBy.ID, "com.google.android.youtube:id/menu_search")
-search_button.click()
+# Select "Settings" from dropdown menu
+d(text="Settings").click()
 
-time.sleep(2)
+# Scroll down to "Autoplay" and toggle switch to turn it on
+d(scrollable=True).scroll.to(text="Autoplay")
+d(text="Autoplay").right(className="android.widget.Switch").click()
 
-search_box = driver.find_element(MobileBy.ID, "com.google.android.youtube:id/search_edit_text")
-search_box.send_keys("dota2")
-
-time.sleep(2)
-
-search_box.send_keys(u'\ue007')
-
-time.sleep(5)
-
-driver.quit()
+# Choose to play on both Wi-Fi and mobile data
+d(text="On Wi-Fi only").click()
+d(text="On Wi-Fi and mobile data").click()
