@@ -1,21 +1,58 @@
-import uiautomator2 as u2
+from src.dump_ui import dump_ui
+import torch
 
-# Connect to device
+import uiautomator2 as u2
+r = dump_ui()
+torch.save(r, 'tmp_ui.res')
 d = u2.connect('38534a424c453098')
 
-# Open YouTube app
-d.app_start('com.google.android.youtube', 'com.google.android.youtube.HomeActivity')
 
-# Tap on profile picture
-d(resourceId="com.google.android.youtube:id/avatar").click()
+d.app_start('com.neumorphic.calculator', 'com.neumorphic.calculator.MainActivity')
+r = dump_ui()
+for e in r:
+    print(e)
 
-# Select "Settings" from dropdown menu
-d(text="Settings").click()
 
-# Scroll down to "Autoplay" and toggle switch to turn it on
-d(scrollable=True).scroll.to(text="Autoplay")
-d(text="Autoplay").right(className="android.widget.Switch").click()
-
-# Choose to play on both Wi-Fi and mobile data
-d(text="On Wi-Fi only").click()
-d(text="On Wi-Fi and mobile data").click()
+torch.save(r, 'tmp_ui.res')
+d(resourceId='com.neumorphic.calculator:id/digit_1').click()
+r = dump_ui()
+torch.save(r, 'tmp_ui.res')
+d(resourceId='com.neumorphic.calculator:id/digit_0').click()
+r = dump_ui()
+torch.save(r, 'tmp_ui.res')
+d(resourceId='com.neumorphic.calculator:id/op_mul').click()
+r = dump_ui()
+torch.save(r, 'tmp_ui.res')
+d(resourceId='com.neumorphic.calculator:id/digit_1').click()
+r = dump_ui()
+torch.save(r, 'tmp_ui.res')
+d(resourceId='com.neumorphic.calculator:id/digit_0').click()
+r = dump_ui()
+torch.save(r, 'tmp_ui.res')
+d(resourceId='com.neumorphic.calculator:id/op_add').click()
+r = dump_ui()
+torch.save(r, 'tmp_ui.res')
+d(resourceId='com.neumorphic.calculator:id/digit_2').click()
+r = dump_ui()
+torch.save(r, 'tmp_ui.res')
+d(resourceId='com.neumorphic.calculator:id/digit_0').click()
+r = dump_ui()
+torch.save(r, 'tmp_ui.res')
+d(resourceId='com.neumorphic.calculator:id/digit_0').click()
+r = dump_ui()
+torch.save(r, 'tmp_ui.res')
+d(resourceId='com.neumorphic.calculator:id/digit_0').click()
+r = dump_ui()
+torch.save(r, 'tmp_ui.res')
+d(resourceId='com.neumorphic.calculator:id/digit_0').click()
+r = dump_ui()
+torch.save(r, 'tmp_ui.res')
+d(resourceId='com.neumorphic.calculator:id/digit_0').click()
+r = dump_ui()
+torch.save(r, 'tmp_ui.res')
+d(resourceId='com.neumorphic.calculator:id/digit_0').click()
+r = dump_ui()
+torch.save(r, 'tmp_ui.res')
+d(resourceId='com.neumorphic.calculator:id/eq').click()
+r = dump_ui()
+torch.save(r, 'tmp_ui.res')

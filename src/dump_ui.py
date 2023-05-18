@@ -7,7 +7,7 @@ def parse_dump(xml_string):
     Parses the XML output of d.dump() and returns a dictionary of UI elements.
     """
     root = ET.fromstring(xml_string)
-    elements = {}
+    elements = []
     for node in root.iter():
         if node.tag == "node":
             element = {
@@ -29,7 +29,7 @@ def parse_dump(xml_string):
                 "selected": node.attrib.get("selected", "false") == "true",
                 "child_count": len(node.findall("node")),
             }
-            elements[node.attrib.get("resource-id", "")] = element
+            elements.append(element)
     return elements
 
 
@@ -44,3 +44,31 @@ def dump_ui_with_connection(d):
     page_source = d.dump_hierarchy(pretty=True)
     r = parse_dump(page_source)
     return r
+
+
+def extract_meta(r):
+    new_r = []
+    for k in r:
+        if 'com.samsung.android' in k['package']:
+            continue
+        if 'com.android.systemui' in k['resource_id']:
+            continue
+        new_element = {
+            'class': k['class'],
+            'text': k['text'],
+            'resource_id': k['resource_id'],
+            # 'child_count': k['child_count'],
+        }
+        pop_key_list = []
+        for new_k in new_element:
+            if new_element[new_k] == '':
+                pop_key_list.append(new_k)
+        for new_k in pop_key_list:
+            new_element.pop(new_k)
+        if len(new_element) == 1:
+            continue
+        if new_element in new_r:
+            continue
+        new_r.append(new_element)
+
+    return new_r

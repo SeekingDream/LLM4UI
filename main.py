@@ -13,8 +13,9 @@ from src.enum_ids import enumerate_ids, get_elements_of_current_driver
 from query_list import QUERY_LIST
 from utils import ErrorReason
 from src.dump_instrumentation import instrument_dump_and_save
+from src.dump_ui import extract_meta
 
-openai.api_key = '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'
+openai.api_key = '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'
 
 
 def response2code(response):
@@ -28,15 +29,13 @@ def response2code(response):
     return code
 
 
-def pipeline2prompt(pipeline):
+def pipeline2prompt(pipeline, init_query):
     init_prompt = 'write a python script to use uiautomator2 library to conduct the following steps\n' + pipeline + '\n'
     init_prompt += 'my device name is 38534a424c453098, platformName is Android, platformVersion is 10.'
     init_prompt += 'start with the following code\n'
-    init_prompt += 'import uiautomator2 as u2\n' \
-                   '# Connect to device' \
-                   "d = u2.connect('38534a424c453098')" \
-                   '# Open YouTube app' \
-                   "d.app_start('com.google.android.youtube', 'com.google.android.youtube.HomeActivity')"
+    init_prompt += 'import uiautomator2 as u2\n\n' \
+                   "d = u2.connect('38534a424c453098')\n" \
+                   "d.app_start(%s, %s)" % (init_query['appPackage'], init_query['appActivity'])
     return init_prompt
 
 
@@ -142,9 +141,13 @@ def handle_query(query, prompt_handle_func, err_handle_func):
     is_success = False
     final_script = ''
 
-    process_step_response = ask_chatbot(query['init_prompt'])
+    init_prompt = query['init_prompt'] + \
+                  '.\nThe appPackage is "' + query['appPackage'] + '"'\
+                  ', and the appActivity is "' + query['appActivity'] + '"'
+    print(init_prompt)
+    process_step_response = ask_chatbot(init_prompt)
     pipeline = response2pipeline(process_step_response)
-    pipeline_prompt = pipeline2prompt(pipeline)
+    pipeline_prompt = pipeline2prompt(pipeline, query)
     print(pipeline)
     question_his = [pipeline_prompt]
     while not is_success:
@@ -165,7 +168,7 @@ def handle_query(query, prompt_handle_func, err_handle_func):
             instrumented_code = instrument_dump_and_save(generated_code)
             execute_code(instrumented_code)
             ui_res = torch.load('tmp_ui.res')
-            page_ids = get_clickable_element(ui_res)
+            page_ids = extract_meta(ui_res)
             error_msg = str(stderr, 'utf-8')
             # error_line = get_error_line(error_msg)
             # error_reason = error_analysis(error_msg)
@@ -208,7 +211,7 @@ def main():
                 os.mkdir(save_dir)
 
             for i, query_instance in enumerate(QUERY_LIST):
-                app_name = query_instance['app_name']
+                app_name = query_instance['appPackage']
                 res = handle_query(query_instance, prompt_hand_func, err_hand_func)
                 is_success, question_his, answer_his, final_script, ask_num = res
 
